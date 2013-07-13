@@ -41,9 +41,11 @@ public abstract class Request {
         }
     }
 
-    synchronized void execute() throws ProcessingException {
+    void execute() throws ProcessingException {
         try {
-            executeHelper();
+            synchronized (connect) {
+                executeHelper();
+            }
         } catch (SQLException e) {
             throw new ProcessingException("Database error");
         }

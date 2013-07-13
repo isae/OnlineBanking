@@ -19,14 +19,16 @@ public class ExistenceCheckingRequest extends Request {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public synchronized boolean getResult() throws ProcessingException {
-        try {
-            PreparedStatement pstmt = PreparedStatements.SELECT_ALL;
-            pstmt.setString(1, parameters[0]);
-            ResultSet rs = pstmt.executeQuery();
-            return rs.next();
-        } catch (SQLException e) {
-            throw new ProcessingException("Database problem");
+    public boolean getResult() throws ProcessingException {
+        synchronized (connect) {
+            try {
+                PreparedStatement pstmt = PreparedStatements.SELECT_ALL;
+                pstmt.setString(1, parameters[0]);
+                ResultSet rs = pstmt.executeQuery();
+                return rs.next();
+            } catch (SQLException e) {
+                throw new ProcessingException("Database problem");
+            }
         }
     }
 }
