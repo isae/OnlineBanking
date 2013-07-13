@@ -21,12 +21,9 @@ public class UserDeletingRequest extends Request {
         //allright
         PreparedStatement pstmt = PreparedStatements.DELETE_USER;
         pstmt.setString(1, parameters[0]);
-        PreparedStatements.LOCK_READ.execute();
         if (checker.exists(parameters[0])) {
             pstmt.execute();
-            PreparedStatements.UNLOCK.execute();
         } else {
-            PreparedStatements.UNLOCK.execute();
             throw new ProcessingException("Defunct username");
         }
 

@@ -19,24 +19,24 @@ public class BalanceCheckingRequest extends Request {
         //To change body of implemented methods use File | Settings | File Templates.
     }
 
-    public synchronized int getResult() throws SQLException,ProcessingException{
-        checker.checkUsername(parameters[0]);
-        //allright
-        int result;
-        PreparedStatements.LOCK_READ.execute();
-        PreparedStatement temp = PreparedStatements.SELECT;
-        temp.setString(1, "balance");
-        temp.setString(2, "username='" + parameters[0] + "\'");
-        ResultSet rs = temp.executeQuery();
-        if (rs.next()) {
-            rs.first();
-            result = rs.getInt("balance");
-            PreparedStatements.UNLOCK.execute();
-        } else {
-            PreparedStatements.UNLOCK.execute();
-            throw new ProcessingException("Defunct username");
-        }
+    public synchronized int getResult() throws ProcessingException {
+        try {
+            checker.checkUsername(parameters[0]);
+            //allright
+            int result;
+            PreparedStatement temp = PreparedStatements.SELECT_ALL;
+            temp.setString(1, parameters[0]);
+            ResultSet rs = temp.executeQuery();
+            if (rs.next()) {
+                rs.first();
+                result = rs.getInt("balance");
+            } else {
+                throw new ProcessingException("Defunct username");
+            }
 
-        return result;
+            return result;
+        } catch (SQLException e) {
+            throw new ProcessingException("Database problem");
+        }
     }
 }

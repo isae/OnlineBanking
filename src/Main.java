@@ -1,4 +1,8 @@
+import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +13,20 @@ import java.sql.DriverManager;
  */
 public class Main {
     public static void main(String[] args) {
-        // connect = DriverManager.getConnection("jdbc:mysql://192.168.1.2:3306/test1?autoReconnect=true&amp;encoding=UTF-8&amp;useUnicode=true&amp;characterEncoding=UTF-8", "test1", "jtUv2wUj8RE9mFDm");
+
+        try {
+
+            String[] parameters = new String[2];
+            parameters[0] = "zarmi";
+            parameters[1] = "500";
+                Request r = new BalanceModifyRequest(parameters, Request.RequestType.ModifyBalance);
+                r.execute();
+        } catch (ProcessingException e) {
+            e.printStackTrace();  //To change body of catch statement use File | Settings | File Templates.
+        }
 
     }
+
 }
+
+

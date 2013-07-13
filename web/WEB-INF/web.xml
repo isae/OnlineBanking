@@ -6,12 +6,21 @@
          version="2.5">
 
 
+
     <servlet>
-        <servlet-name>ClientPage</servlet-name>
-        <servlet-class>ClientPage</servlet-class>
+        <servlet-name>Sender</servlet-name>
+        <servlet-class>Sender</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>RequestServlet</servlet-name>
+        <servlet-class>RequestServlet</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>ClientPage</servlet-name>
-        <url-pattern>/clientpage</url-pattern>
+        <servlet-name>RequestServlet</servlet-name>
+        <url-pattern>/request</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>Sender</servlet-name>
+        <url-pattern>/sender</url-pattern>
     </servlet-mapping>
 </web-app>

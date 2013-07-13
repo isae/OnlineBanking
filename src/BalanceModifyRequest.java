@@ -27,24 +27,19 @@ public class BalanceModifyRequest extends Request {
             pstmt = PreparedStatements.DEC_BALANCE;
         }
         pstmt.setInt(1, Math.abs(sum));
-        pstmt.setString(2, "username='" + parameters[0] + "\'");
-        PreparedStatements.LOCK_READ.execute();
+        pstmt.setString(2, parameters[0]);
         if (checker.exists(parameters[0])) {
-            PreparedStatement temp = PreparedStatements.SELECT;
-            temp.setString(1, "balance");
-            temp.setString(2, "username='" + parameters[0] + "\'");
+            PreparedStatement temp = PreparedStatements.SELECT_ALL;
+            temp.setString(1, parameters[0]);
             ResultSet rs = temp.executeQuery();
             rs.first();
             int curr = rs.getInt("balance");
-            if (curr - sum > 0) {
+            if (curr + sum > -1000) {
                 pstmt.execute();
-                PreparedStatements.UNLOCK.execute();
             } else {
-                PreparedStatements.UNLOCK.execute();
                 throw new ProcessingException("Balance can`t be negative");
             }
         } else {
-            PreparedStatements.UNLOCK.execute();
             throw new ProcessingException("Defunct username");
         }
     }

@@ -13,17 +13,13 @@ public class PreparedStatements {
     public static PreparedStatement DELETE_USER;
     public static PreparedStatement INC_BALANCE;
     public static PreparedStatement DEC_BALANCE;
-    public static PreparedStatement SELECT;
-    public static PreparedStatement LOCK_READ;
-    public static PreparedStatement UNLOCK;
-    public PreparedStatements(Connection connect) throws SQLException {
-        this.connect = connect;
+    public static PreparedStatement SELECT_ALL;
+    public PreparedStatements(Connection con) throws SQLException {
+        connect = con;
         ADD_USER = connect.prepareStatement("INSERT INTO users VALUE (?,?,0)");
         DELETE_USER = connect.prepareStatement("DELETE FROM users WHERE username=?");
-        SELECT = connect.prepareStatement("SELECT ? FROM users WHERE ?");
+        SELECT_ALL = connect.prepareStatement("SELECT * FROM users WHERE username=?");
         INC_BALANCE = connect.prepareStatement("UPDATE users SET balance=balance + ? WHERE username=?");
         DEC_BALANCE = connect.prepareStatement("UPDATE users SET balance=balance - ? WHERE username=?");
-        LOCK_READ = connect.prepareStatement("LOCK TABLES users WRITE");
-        UNLOCK = connect.prepareStatement("UNLOCK TABLES");
     }
 }

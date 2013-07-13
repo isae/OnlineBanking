@@ -2,6 +2,8 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created with IntelliJ IDEA.
@@ -17,26 +19,20 @@ public class GettingAllRequest extends Request {
 
     @Override
     void executeHelper() throws SQLException {
-        PreparedStatement statement = connect.prepareStatement("SELECT * FROM users");
     }
 
-    synchronized String[] getResults() throws SQLException {
-        PreparedStatements.LOCK_READ.execute();
-        Statement statement = connect.createStatement();
-        int size = statement.executeUpdate("SELECT COUNT(*) FROM users");
-        PreparedStatement pstmt = PreparedStatements.SELECT;
-        pstmt.setString(1, "*");
-        pstmt.setString(2, "");
-        ResultSet rs = pstmt.executeQuery();
-        rs.first();
-        String[] result = new String[size];
-        int i = 0;
-        while (rs.next()) {
-            result[i] = rs.getString("username");
-            i++;
+    synchronized List<String> getResults() throws ProcessingException {
+        try {
+            List<String> list = new ArrayList<String>();
+            Statement stmt = connect.createStatement();
+            ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE TRUE");
+            rs.first();
+            while (rs.next()) {
+                list.add(rs.getString("username"));
+            }
+            return list;
+        } catch (SQLException e) {
+            throw new ProcessingException("Database error");
         }
-        result[i] = rs.getString("username");
-        PreparedStatements.UNLOCK.execute();
-        return result;
     }
 }

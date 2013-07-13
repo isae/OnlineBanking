@@ -8,8 +8,8 @@ import java.sql.SQLException;
  * Time: 19:53
  */
 public class InputChecker {
-    final static String USERNAME_REGEXP = "[a-zA-Z_]{5,20}";
-    final static String PASSWORD_REGEXP = "[]{6,}";
+    final static String USERNAME_REGEXP = "[a-zA-Z_0-9]{3,20}";
+    final static String PASSWORD_REGEXP = "[^ ]{6,20}";
 
     public void checkUsername(String username) throws ProcessingException {
         if (!username.matches(USERNAME_REGEXP)) {
@@ -25,16 +25,15 @@ public class InputChecker {
 
     public void checkSum(String sum) throws ProcessingException {
         try {
-            double i = Integer.parseInt(sum);
+            Integer.parseInt(sum);
         } catch (NumberFormatException e) {
             throw new ProcessingException("Incorrect sum");
         }
     }
 
     public boolean exists(String username) throws SQLException{
-        PreparedStatement pstmt = PreparedStatements.SELECT;
-        pstmt.setString(1, "*");
-        pstmt.setString(2, "username='" + username + "\'");
+        PreparedStatement pstmt = PreparedStatements.SELECT_ALL;
+        pstmt.setString(1, username);
         ResultSet rs = pstmt.executeQuery();
         return rs.next();
     }

@@ -13,11 +13,12 @@ import java.util.concurrent.Executor;
 public abstract class Request {
 
     public enum RequestType {
-        AddAcc, DelAcc, GetAll, GetBalance, ModifyBalance, Transfer, Existence;
+        AddAcc, DelAcc, GetAll, GetBalance, ModifyBalance, Transfer, Existence, CastInterest
     }
 
     static Connection connect;
     static InputChecker checker;
+    static PreparedStatements statements;
     String[] parameters;
     RequestType type;
 
@@ -26,10 +27,17 @@ public abstract class Request {
         this.type = type;
         checker = new InputChecker();
         try {
+            Class.forName("com.mysql.jdbc.Driver");
             connect = DriverManager.getConnection("jdbc:mysql://skupon.ru:3306/test1?autoReconnect=true&amp;encoding=UTF-8&amp;useUnicode=true&amp;characterEncoding=UTF-8", "test1", "jtUv2wUj8RE9mFDm");
+            statements = new PreparedStatements(connect);
             //connect = DriverManager.getConnection("jdbc:mysql://192.168.1.2:3306/test1?autoReconnect=true&amp;encoding=UTF-8&amp;useUnicode=true&amp;characterEncoding=UTF-8", "test1", "jtUv2wUj8RE9mFDm");
+
         } catch (SQLException e) {
             throw new ProcessingException("Can`t connect to SQL database");
+            //throw new ProcessingException(e.getMessage());
+        } catch (ClassNotFoundException e) {
+
+            throw new ProcessingException("Can`t find SQL driver");
         }
     }
 

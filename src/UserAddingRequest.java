@@ -22,14 +22,11 @@ public class UserAddingRequest extends Request {
         //allright
         PreparedStatement pstmt = PreparedStatements.ADD_USER;
         pstmt.setString(1, parameters[0]);
-        pstmt.setInt(2, Integer.parseInt(parameters[1]));
-        PreparedStatements.LOCK_READ.execute();
-        if (checker.exists(parameters[0])) {
+        pstmt.setString(2, parameters[1]);
+        if (!checker.exists(parameters[0])) {
             pstmt.execute();
-            PreparedStatements.UNLOCK.execute();
         } else {
-            PreparedStatements.UNLOCK.execute();
-            throw new ProcessingException("Defunct username");
+            throw new ProcessingException("Username is already exists");
         }
 
     }
