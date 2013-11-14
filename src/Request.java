@@ -28,13 +28,11 @@ public abstract class Request {
         checker = new InputChecker();
         try {
             Class.forName("com.mysql.jdbc.Driver");
-            connect = DriverManager.getConnection("jdbc:mysql://skupon.ru:3306/test1?autoReconnect=true&amp;encoding=UTF-8&amp;useUnicode=true&amp;characterEncoding=UTF-8", "test1", "jtUv2wUj8RE9mFDm");
+            connect = DriverManager.getConnection(/*...*/);
             statements = new PreparedStatements(connect);
-            //connect = DriverManager.getConnection("jdbc:mysql://192.168.1.2:3306/test1?autoReconnect=true&amp;encoding=UTF-8&amp;useUnicode=true&amp;characterEncoding=UTF-8", "test1", "jtUv2wUj8RE9mFDm");
 
         } catch (SQLException e) {
             throw new ProcessingException("Can`t connect to SQL database");
-            //throw new ProcessingException(e.getMessage());
         } catch (ClassNotFoundException e) {
 
             throw new ProcessingException("Can`t find SQL driver");
