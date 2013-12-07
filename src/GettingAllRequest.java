@@ -28,6 +28,8 @@ public class GettingAllRequest extends Request {
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE TRUE");
                 rs.first();
+                if(rs.first)
+                    list.add(rs.getString("username"));
                 while (rs.next()) {
                     list.add(rs.getString("username"));
                 }
