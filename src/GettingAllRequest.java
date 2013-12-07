@@ -27,7 +27,6 @@ public class GettingAllRequest extends Request {
                 List<String> list = new ArrayList<String>();
                 Statement stmt = connect.createStatement();
                 ResultSet rs = stmt.executeQuery("SELECT * FROM users WHERE TRUE");
-                rs.first();
                 while (rs.next()) {
                     list.add(rs.getString("username"));
                 }
